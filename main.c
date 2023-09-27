@@ -2,12 +2,13 @@
 #include "menu.h"
 
 int main(){
-	printf("\e[H\e[2J\e[3J");
+	clear_console();
 	do{
 		menu();
 		//Get user input
 		//Handle input
 		//Save data
 	}while(!exit_call);
+	clear_console();
     return 0;
 }

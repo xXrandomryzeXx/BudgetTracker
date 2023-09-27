@@ -7,4 +7,6 @@ extern short current_menu;
 
 void menu();
 
+void clear_console();
+
 #endif

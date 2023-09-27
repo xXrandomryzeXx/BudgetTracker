@@ -13,6 +13,6 @@ double get_money_input(){
 	return input;
 }
 
-void get_text_input(char string[256]){
-	scanf("%256s", string);
+void get_text_input(char string[32]){
+	scanf("%32s", string);
 }
