@@ -1,7 +1,15 @@
 #include "menu.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "input.h"
 #include "file.h"
+
+
+
+double get_sum(time_t start, time_t end, char lines[1024][3][32]);
+
+double get_average(time_t start, time_t end, char lines[1024][3][32]);
 
 short exit_call = 0;
 short current_menu = 0; // 0 - First menu
@@ -47,10 +55,13 @@ void menu(){
 			clear_console();
 			char lines[1024][3][32];
 			get_data(lines);
-			for(int i = 0; i < 1024; i++){
-				 if(lines[i][0][0] != '\0') printf("Type of expense -> %s cost -> %s\n",lines[i][1], lines[i][2]);
-				 else break;
-			}
+			double sum = 0;
+			struct tm tm={0};
+			tm.tm_year = 2023-1900;
+			tm.tm_mon = 9 - 1;
+			tm.tm_mday = 26;
+			tm.tm_hour = 12;
+			printf("Sum = %lf\n", get_sum(mktime(&tm), time(0), lines));
 			current_menu = 0;
 			break;
 		case 4:
@@ -60,4 +71,30 @@ void menu(){
 		default:
 			printf("\n Enter a valid choice \n");
 	}
+}
+double get_sum(time_t start, time_t end, char lines[1024][3][32]){
+	double sum = 0;
+	for(int i = 0; i < 1024; i++){
+		if(lines[i][0][0] != '\0'){
+			time_t date = strtol(lines[i][0], NULL, 10);
+			//printf("%s\n", asctime(localtime(&date)));
+			if((start==0 || difftime(date, start) > 0) && (end==0 || difftime(end, date) > 0)){
+				sum += strtod(lines[i][2], NULL);
+			}
+		}
+		else break;
+	}
+	return sum;
+}
+double get_average(time_t start, time_t end, char lines[1024][3][32]){
+	double sum = 0;
+	int count = 0;
+	for(int i = 0; i < 1024; i++){
+		if(lines[i][0][0] != '\0'){
+			sum += strtod(lines[i][2], NULL);
+			count++;
+		}
+		else break;	
+	}
+	return sum/count;
 }
